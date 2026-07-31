@@ -344,6 +344,9 @@ section[id],header[id]{scroll-margin-top:82px}
 .done .circle svg{width:34px;height:34px}
 .done h3{font-size:1.5rem}
 .done p{color:var(--muted);margin-top:8px}
+.btn-wa{display:inline-flex;align-items:center;justify-content:center;gap:10px;margin-top:18px;background:#25D366;color:#08351b;font-family:var(--f-body);font-weight:700;font-size:1.05rem;padding:15px 28px;border-radius:999px;text-decoration:none;box-shadow:0 12px 26px -12px rgba(37,211,102,.85);transition:transform .25s var(--ease)}
+.btn-wa:hover{transform:translateY(-3px)}
+.btn-wa svg{width:22px;height:22px}
 @keyframes pop{from{opacity:0;transform:scale(.9)}to{opacity:1;transform:scale(1)}}
 
 /* footer */
@@ -620,7 +623,11 @@ table.adm a.tel{color:var(--teal);font-weight:600}
       <div class="done" id="done" role="status">
         <div class="circle"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round"><path d="M20 6L9 17l-5-5"/></svg></div>
         <h3>Interesse registrado!</h3>
-        <p>Abri o WhatsApp com sua mensagem. É só apertar enviar pra confirmar. 👊</p>
+        <p>Agora toque no botão pra abrir o WhatsApp e enviar sua mensagem. 👊</p>
+        <a class="btn-wa" id="waLink" href="#" target="_blank" rel="noopener">
+          <svg viewBox="0 0 24 24" fill="currentColor" aria-hidden="true"><path d="M12.04 2C6.58 2 2.13 6.45 2.13 11.91c0 1.75.46 3.45 1.32 4.95L2 22l5.25-1.38a9.9 9.9 0 0 0 4.79 1.22h.01c5.46 0 9.91-4.45 9.91-9.91 0-2.65-1.03-5.14-2.9-7.01A9.82 9.82 0 0 0 12.04 2zm5.8 14.06c-.25.7-1.44 1.33-1.98 1.38-.53.05-.53.42-3.32-.7-2.79-1.12-4.5-3.96-4.63-4.14-.13-.18-1.09-1.45-1.09-2.76s.69-1.96.94-2.23c.25-.27.53-.34.71-.34.18 0 .35.01.51.02.16.01.38-.06.6.46.22.53.76 1.84.83 1.97.07.13.11.28.02.46-.09.18-.13.28-.27.44-.13.16-.28.35-.4.47-.13.13-.27.28-.12.54.15.27.66 1.09 1.42 1.76.98.87 1.8 1.15 2.06 1.28.26.13.41.11.56-.07.15-.18.65-.76.82-1.02.18-.27.35-.22.6-.13.24.09 1.54.73 1.8.86.27.13.44.2.51.31.06.11.06.66-.19 1.36z"/></svg>
+          Abrir WhatsApp
+        </a>
       </div>
     </form>
   </div>
@@ -853,7 +860,9 @@ var ADMIN_EMAIL = "leonardorabbit@gmail.com";
             + 'Total: R$ '+(v*50)+' (preço de custo)\n\n'
             + 'A entrega a gente combina depois (retirada ou envio).';
     var url = 'https://wa.me/'+WHATSAPP+'?text='+encodeURIComponent(msg);
-    window.open(url, '_blank', 'noopener');
+    var waLink = document.getElementById('waLink');
+    if (waLink) waLink.href = url;
+    try{ window.open(url, '_blank', 'noopener'); }catch(_){}
     form.querySelector('.form-grid').style.display='none';
     form.querySelector('.summary').style.display='none';
     form.querySelector('.submit').style.display='none';
