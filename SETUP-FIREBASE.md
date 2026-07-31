@@ -25,21 +25,9 @@ Depois em **Users** → *Adicionar usuário*:
 Se trocar o e-mail, troque nos dois lugares: `ADMIN_EMAIL` (index.html) e no
 `firestore.rules`.
 
-## 4. Config Web
-Console → **Configurações do projeto** → *Seus apps* → app Web → **SDK/Config**.
-Copie os valores e cole no `index.html`, no objeto `FIREBASE_CONFIG`:
-
-```js
-var FIREBASE_CONFIG = {
-  apiKey: "...",
-  authDomain: "pescapp-app-loja.firebaseapp.com",
-  projectId: "pescapp-app-loja",
-  storageBucket: "...",
-  messagingSenderId: "...",
-  appId: "..."
-};
-```
-(pode colar aqui no chat que eu já deixo preenchido.)
+## 4. Config Web  ✅ já preenchida
+O objeto `FIREBASE_CONFIG` no `index.html` já está com a config do projeto
+`pescapp-coelho`. Nada a fazer aqui, a não ser que você troque de projeto.
 
 ## 5. Publicar (Firebase Hosting)
 ```bash
@@ -48,8 +36,8 @@ firebase login
 firebase init hosting     # public: a pasta com o index.html; SPA: não
 firebase deploy
 ```
-Site: `https://pescapp-app-loja.web.app`
-Painel: `https://pescapp-app-loja.web.app/#admin`
+Site: `https://pescapp-coelho.web.app`
+Painel: `https://pescapp-coelho.web.app/#admin`
 
 ## Estrutura de cada cadastro
 `interesses/{id}` → `{ nome, telefone, quantidade, total, pago:false, status:"novo", criadoEm }`
