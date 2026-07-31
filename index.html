@@ -372,6 +372,42 @@ section[id],header[id]{scroll-margin-top:82px}
 .reveal{opacity:0;transform:translateY(26px);transition:opacity .7s var(--ease),transform .7s var(--ease)}
 .reveal.in{opacity:1;transform:none}
 
+/* ======================= ADMIN ======================= */
+.admin{position:fixed;inset:0;z-index:200;background:var(--bg);display:none;overflow-y:auto}
+.admin.show{display:block}
+.admin-in{max-width:1040px;margin:0 auto;padding:clamp(20px,4vw,40px) clamp(16px,4vw,32px)}
+.admin-top{display:flex;align-items:center;justify-content:space-between;gap:16px;margin-bottom:26px}
+.admin-top .brand .mark{width:34px;height:34px}
+.admin-top h1{font-size:1.25rem}
+.admin-close{display:inline-flex;align-items:center;gap:7px;border:1px solid var(--line);border-radius:999px;padding:8px 16px;font-weight:600;font-size:.9rem;color:var(--muted);cursor:pointer;background:transparent}
+.admin-close:hover{background:var(--surface-2);color:var(--ink)}
+.adm-card{max-width:400px;margin:8vh auto 0;background:var(--surface);border:1px solid var(--line);border-radius:var(--r-lg);box-shadow:var(--shadow);padding:32px}
+.adm-card h2{font-size:1.4rem}
+.adm-card p{color:var(--muted);margin-top:8px;font-size:.95rem}
+.adm-card input{width:100%;margin-top:18px;font-family:var(--f-body);font-size:1rem;color:var(--ink);background:var(--surface-2);border:1.5px solid var(--line-strong);border-radius:12px;padding:14px 16px}
+.adm-card input:focus{outline:none;border-color:var(--teal-bright);box-shadow:0 0 0 4px color-mix(in srgb,var(--teal-bright) 22%,transparent)}
+.adm-card button{width:100%;margin-top:14px;background:var(--teal);color:#fff;font-family:var(--f-body);font-weight:700;font-size:1rem;border:0;border-radius:12px;padding:14px;cursor:pointer;transition:filter .2s}
+.adm-card button:hover{filter:brightness(1.08)}
+.adm-card button:disabled{opacity:.6;cursor:default}
+.adm-hint{margin-top:16px;font-size:.8rem;color:var(--muted);line-height:1.5}
+.adm-stats{display:grid;grid-template-columns:repeat(4,1fr);gap:12px;margin-bottom:22px}
+.adm-stat{background:var(--surface);border:1px solid var(--line);border-radius:var(--r);padding:16px 18px}
+.adm-stat .n{font-family:var(--f-display);font-weight:800;font-size:1.7rem;line-height:1;font-variant-numeric:tabular-nums}
+.adm-stat .l{color:var(--muted);font-size:.82rem;margin-top:6px}
+.adm-tablewrap{overflow-x:auto;border:1px solid var(--line);border-radius:var(--r);background:var(--surface)}
+table.adm{width:100%;border-collapse:collapse;font-size:.92rem;min-width:640px}
+table.adm th,table.adm td{text-align:left;padding:13px 16px;border-bottom:1px solid var(--line);white-space:nowrap}
+table.adm th{font-weight:600;color:var(--muted);font-size:.78rem;letter-spacing:.04em;text-transform:uppercase;background:var(--surface-2)}
+table.adm td.num{font-variant-numeric:tabular-nums}
+table.adm tr:last-child td{border-bottom:0}
+table.adm a.tel{color:var(--teal);font-weight:600}
+.pill{display:inline-flex;align-items:center;gap:6px;border:0;cursor:pointer;font-family:var(--f-body);font-weight:600;font-size:.82rem;padding:6px 12px;border-radius:999px;transition:filter .2s}
+.pill.no{background:color-mix(in srgb,#D9534F 16%,transparent);color:#C0392B}
+.pill.yes{background:color-mix(in srgb,var(--teal-bright) 20%,transparent);color:var(--teal)}
+.pill:hover{filter:brightness(1.05)}
+.adm-empty{padding:40px;text-align:center;color:var(--muted)}
+@media (max-width:640px){.adm-stats{grid-template-columns:1fr 1fr}}
+
 /* ======================= RESPONSIVE ======================= */
 @media (max-width:900px){
   .hero-grid{grid-template-columns:1fr;text-align:left}
@@ -604,15 +640,82 @@ section[id],header[id]{scroll-margin-top:82px}
 
 <div class="lb" id="lb" aria-hidden="true"><div class="lb-pic" id="lbImg" role="img" aria-label="Imagem ampliada do boné"></div></div>
 
+<!-- ======================= ADMIN (acesse com #admin na URL) ======================= -->
+<div class="admin" id="admin" aria-hidden="true">
+  <div class="admin-in">
+    <div class="admin-top">
+      <span class="brand"><span class="mark" role="img" aria-label="PescApp"></span><h1 style="font-family:var(--f-display);margin:0">Gestão de interesses</h1></span>
+      <button class="admin-close" id="admClose" type="button">Fechar</button>
+    </div>
+
+    <div class="adm-card" id="admLogin">
+      <h2>Área do Coelho</h2>
+      <p>Digite a senha pra ver e gerenciar os pedidos.</p>
+      <input type="password" id="admPass" placeholder="Senha" autocomplete="current-password">
+      <button type="button" id="admEnter">Entrar</button>
+      <span class="err" id="admErr" aria-live="polite" style="display:block;margin-top:10px"></span>
+      <p class="adm-hint" id="admHint"></p>
+    </div>
+
+    <div id="admPanel" style="display:none">
+      <div class="adm-stats">
+        <div class="adm-stat"><div class="n" id="stPessoas">0</div><div class="l">pessoas</div></div>
+        <div class="adm-stat"><div class="n" id="stBones">0</div><div class="l">bonés reservados</div></div>
+        <div class="adm-stat"><div class="n" id="stValor">R$ 0</div><div class="l">valor total</div></div>
+        <div class="adm-stat"><div class="n" id="stPagos">0</div><div class="l">já pagaram</div></div>
+      </div>
+      <div class="adm-tablewrap">
+        <table class="adm">
+          <thead><tr><th>Nome</th><th>Telefone</th><th>Qtd</th><th>Total</th><th>Quando</th><th>Pago?</th></tr></thead>
+          <tbody id="admRows"></tbody>
+        </table>
+        <div class="adm-empty" id="admEmpty" style="display:none">Nenhum cadastro ainda.</div>
+      </div>
+      <div style="display:flex;justify-content:space-between;align-items:center;gap:16px;margin-top:18px;flex-wrap:wrap">
+        <button class="admin-close" id="admReload" type="button">↻ Atualizar lista</button>
+        <button class="admin-close" id="admLogout" type="button">Sair</button>
+      </div>
+    </div>
+  </div>
+</div>
+
 <script>
 /* ===== CONFIG =============================================
-   >>> TROQUE pelo seu número de WhatsApp (DDI 55 + DDD + número, só dígitos)
-   Ex.: Brasil, DDD 11, número 91234-5678  ->  "5511912345678"           */
+   1) WhatsApp — DDI 55 + DDD + número, só dígitos                        */
 var WHATSAPP = "5551996195068";
+
+/* 2) Firebase — cole a config do Console > Config. do projeto > SDK Web.
+   Enquanto estiver vazio, a página funciona só com WhatsApp (ex.: no
+   preview). No site hospedado, preencha para gravar os cadastros.        */
+var FIREBASE_CONFIG = {
+  apiKey: "",
+  authDomain: "",
+  projectId: "",
+  storageBucket: "",
+  messagingSenderId: "",
+  appId: ""
+};
+
+/* 3) Admin — e-mail do dono do painel. Crie esse usuário no Firebase
+   (Authentication > Email/senha). A "senha" do painel é a senha dele.    */
+var ADMIN_EMAIL = "leonardorabbit@gmail.com";
 /* ========================================================= */
 
 (function(){
   var reduce = window.matchMedia('(prefers-reduced-motion: reduce)').matches;
+
+  /* ---------- FIREBASE (best-effort; falls back to WhatsApp-only) ---------- */
+  var FB_VER = '10.12.5';
+  var fbReady = (async function(){
+    if (!FIREBASE_CONFIG || !FIREBASE_CONFIG.apiKey) return null;
+    try{
+      var appMod = await import('https://www.gstatic.com/firebasejs/'+FB_VER+'/firebase-app.js');
+      var fsMod  = await import('https://www.gstatic.com/firebasejs/'+FB_VER+'/firebase-firestore.js');
+      var auMod  = await import('https://www.gstatic.com/firebasejs/'+FB_VER+'/firebase-auth.js');
+      var app = appMod.initializeApp(FIREBASE_CONFIG);
+      return { db: fsMod.getFirestore(app), auth: auMod.getAuth(app), fs: fsMod, au: auMod };
+    }catch(e){ console.warn('Firebase indisponível (preview ou não configurado):', e && e.message); return null; }
+  })();
 
   /* ---------- THEME TOGGLE ---------- */
   var root = document.documentElement, tBtn = document.getElementById('themeBtn');
@@ -714,7 +817,7 @@ var WHATSAPP = "5551996195068";
   /* ---------- VALIDATION + SUBMIT ---------- */
   var form = document.getElementById('interestForm'), name = document.getElementById('name'), done = document.getElementById('done');
   function setErr(el,msg){ var e=document.getElementById(el.id+'Err'); e.textContent=msg||''; el.setAttribute('aria-invalid', msg?'true':'false'); return !msg; }
-  form.addEventListener('submit', function(ev){
+  form.addEventListener('submit', async function(ev){
     ev.preventDefault();
     var okQ = setErr(qty, clampQty()>=1 ? '' : 'Informe ao menos 1.');
     var digits = phone.value.replace(/\D/g,'');
@@ -725,6 +828,24 @@ var WHATSAPP = "5551996195068";
       return;
     }
     var v = clampQty();
+    var submitBtn = form.querySelector('.submit');
+    submitBtn.disabled = true;
+    /* grava no Firebase (não bloqueia o WhatsApp se falhar) */
+    try{
+      var fb = await fbReady;
+      if (fb){
+        await fb.fs.addDoc(fb.fs.collection(fb.db,'interesses'), {
+          nome: name.value.trim(),
+          telefone: phone.value,
+          quantidade: v,
+          total: v*50,
+          pago: false,
+          status: 'novo',
+          criadoEm: fb.fs.serverTimestamp()
+        });
+      }
+    }catch(e){ console.warn('Falha ao salvar cadastro:', e && e.message); }
+    submitBtn.disabled = false;
     var msg = 'Olá! Quero manifestar interesse nos bonés do PescApp 🎣\n\n'
             + 'Nome: '+name.value.trim()+'\n'
             + 'Telefone: '+phone.value+'\n'
@@ -740,6 +861,93 @@ var WHATSAPP = "5551996195068";
     done.classList.add('show');
     done.scrollIntoView({behavior: reduce?'auto':'smooth', block:'center'});
   });
+
+  /* ---------- ADMIN PANEL (abra com #admin na URL) ---------- */
+  function esc(s){ return String(s==null?'':s).replace(/[&<>"]/g,function(c){return {'&':'&amp;','<':'&lt;','>':'&gt;','"':'&quot;'}[c];}); }
+  function fmtDate(ts){ try{ var d = ts && ts.toDate ? ts.toDate() : null; return d ? d.toLocaleDateString('pt-BR',{day:'2-digit',month:'2-digit'})+' '+d.toLocaleTimeString('pt-BR',{hour:'2-digit',minute:'2-digit'}) : '—'; }catch(_){ return '—'; } }
+
+  var adminEl = document.getElementById('admin');
+  var admLogin = document.getElementById('admLogin'), admPanel = document.getElementById('admPanel');
+  var admPass = document.getElementById('admPass'), admEnter = document.getElementById('admEnter'), admErr = document.getElementById('admErr');
+  var admAuthWired = false, admActionsWired = false;
+
+  function showAdmin(on){
+    adminEl.classList.toggle('show', on);
+    adminEl.setAttribute('aria-hidden', on?'false':'true');
+    document.body.style.overflow = on ? 'hidden' : '';
+    if (on) enterAdmin();
+  }
+  function hashCheck(){ showAdmin(location.hash === '#admin'); }
+  window.addEventListener('hashchange', hashCheck);
+  document.getElementById('admClose').addEventListener('click', function(){ location.hash = ''; });
+  hashCheck();
+
+  async function enterAdmin(){
+    var fb = await fbReady;
+    var hint = document.getElementById('admHint');
+    if (!fb){
+      admLogin.style.display=''; admPanel.style.display='none'; admErr.textContent='';
+      admEnter.disabled=true; admPass.disabled=true;
+      hint.textContent='O painel precisa do Firebase configurado e do site publicado — no preview ele não conecta.';
+      return;
+    }
+    admEnter.disabled=false; admPass.disabled=false; hint.textContent='';
+    if (!admAuthWired){
+      admAuthWired=true;
+      fb.au.onAuthStateChanged(fb.auth, function(user){
+        if (user){ admLogin.style.display='none'; admPanel.style.display=''; loadList(fb); }
+        else { admLogin.style.display=''; admPanel.style.display='none'; }
+      });
+      async function doLogin(){
+        admErr.textContent=''; admEnter.disabled=true; admEnter.textContent='Entrando...';
+        try{ await fb.au.signInWithEmailAndPassword(fb.auth, ADMIN_EMAIL, admPass.value); admPass.value=''; }
+        catch(e){ admErr.textContent='Senha incorreta ou acesso negado.'; }
+        admEnter.disabled=false; admEnter.textContent='Entrar';
+      }
+      admEnter.addEventListener('click', doLogin);
+      admPass.addEventListener('keydown', function(e){ if(e.key==='Enter') doLogin(); });
+    }
+    if (!admActionsWired){
+      admActionsWired=true;
+      document.getElementById('admLogout').addEventListener('click', function(){ fb.au.signOut(fb.auth); });
+      document.getElementById('admReload').addEventListener('click', function(){ loadList(fb); });
+    }
+  }
+
+  async function loadList(fb){
+    var rowsEl = document.getElementById('admRows'), emptyEl = document.getElementById('admEmpty');
+    rowsEl.innerHTML='';
+    try{
+      var q = fb.fs.query(fb.fs.collection(fb.db,'interesses'), fb.fs.orderBy('criadoEm','desc'));
+      var snap = await fb.fs.getDocs(q);
+      var pessoas=0, bones=0, valor=0, pagos=0;
+      emptyEl.style.display = snap.empty ? '' : 'none';
+      snap.forEach(function(ds){
+        var d = ds.data(); pessoas++; bones+=(d.quantidade||0); valor+=(d.total||0); if(d.pago) pagos++;
+        var tel = (d.telefone||'').replace(/\D/g,'');
+        var tr = document.createElement('tr');
+        tr.innerHTML = '<td>'+esc(d.nome)+'</td>'
+          + '<td><a class="tel" href="https://wa.me/55'+tel+'" target="_blank" rel="noopener">'+esc(d.telefone)+'</a></td>'
+          + '<td class="num">'+(d.quantidade||0)+'</td>'
+          + '<td class="num">R$ '+(d.total||0)+'</td>'
+          + '<td>'+fmtDate(d.criadoEm)+'</td><td></td>';
+        var btn = document.createElement('button');
+        btn.className = 'pill ' + (d.pago?'yes':'no');
+        btn.textContent = d.pago ? '✓ Pago' : 'Marcar pago';
+        btn.addEventListener('click', async function(){
+          btn.disabled=true;
+          try{ await fb.fs.updateDoc(fb.fs.doc(fb.db,'interesses',ds.id), { pago: !d.pago }); loadList(fb); }
+          catch(e){ btn.disabled=false; alert('Não consegui atualizar: '+(e&&e.message)); }
+        });
+        tr.lastChild.appendChild(btn);
+        rowsEl.appendChild(tr);
+      });
+      document.getElementById('stPessoas').textContent=pessoas;
+      document.getElementById('stBones').textContent=bones;
+      document.getElementById('stValor').textContent='R$ '+valor;
+      document.getElementById('stPagos').textContent=pagos;
+    }catch(e){ emptyEl.style.display=''; emptyEl.textContent='Erro ao carregar: '+(e&&e.message); }
+  }
 })();
 </script>
 

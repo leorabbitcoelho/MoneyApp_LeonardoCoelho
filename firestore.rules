@@ -1,0 +1,36 @@
+rules_version = '2';
+
+// Regras de segurança do Firestore para a coleção de interesses dos bonés.
+// Publique isto em: Firebase Console > Firestore Database > aba "Regras" > Publicar.
+//
+// O que elas garantem:
+//  - Qualquer pessoa pode SE CADASTRAR pelo formulário (create), desde que
+//    envie os campos esperados e sem se marcar como "pago".
+//  - Só o admin LOGADO (o e-mail abaixo) pode LER, EDITAR e marcar como pago.
+//    Assim ninguém consegue baixar a lista de nomes/telefones dos clientes.
+//
+// Se você mudar o ADMIN_EMAIL no index.html, mude também o e-mail aqui.
+
+service cloud.firestore {
+  match /databases/{database}/documents {
+
+    match /interesses/{id} {
+
+      allow create: if request.resource.data.nome is string
+                    && request.resource.data.nome.size() > 1
+                    && request.resource.data.telefone is string
+                    && request.resource.data.quantidade is int
+                    && request.resource.data.quantidade > 0
+                    && request.resource.data.quantidade <= 99
+                    && request.resource.data.pago == false;
+
+      allow read, update, delete: if request.auth != null
+                    && request.auth.token.email == "leonardorabbit@gmail.com";
+    }
+
+    // Bloqueia qualquer outra coleção por padrão.
+    match /{document=**} {
+      allow read, write: if false;
+    }
+  }
+}
