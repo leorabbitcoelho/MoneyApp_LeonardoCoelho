@@ -4,7 +4,7 @@
 <meta charset="utf-8">
 <meta name="viewport" content="width=device-width, initial-scale=1">
 <title>Boné oficial do PescApp — manifeste seu interesse</title>
-<meta name="description" content="Boné premium da comunidade PescApp: verde, logo bordada, preço de custo R$50 com frete grátis. Confirme seu interesse para batermos as 50 unidades.">
+<meta name="description" content="Boné premium da comunidade PescApp: verde, logo bordada, preço de custo R$50. Confirme seu interesse para batermos as 50 unidades.">
 <meta name="theme-color" content="#0E4A3E">
 </head>
 <body>
@@ -168,35 +168,45 @@ p{margin:0}
 .hero .microstats .l{font-size:.8rem;color:var(--hero-muted);margin-top:6px}
 .hero .microstats .sep{width:1px;background:var(--hero-line)}
 
-/* cap showcase */
-.stage{perspective:1200px;display:grid;place-items:center}
-.cap{
-  position:relative;width:min(84%,440px);
-  will-change:transform;transition:transform .12s linear;
-  transform-style:preserve-3d;
-}
-.cap .glow{
-  position:absolute;inset:-8% -6% -22% -6%;border-radius:50%;
+/* cap 3D turntable showcase */
+.stage{display:grid;place-items:center}
+.viewer{position:relative;width:min(84%,440px);perspective:1500px;animation:float 6.5s var(--ease) infinite}
+.viewer .glow{
+  position:absolute;inset:-8% -6% -16% -6%;border-radius:50%;
   background:radial-gradient(closest-side,rgba(31,163,126,.55),transparent 72%);
   filter:blur(14px);z-index:-1;
 }
-.cap .face{aspect-ratio:1;border-radius:22px;background:var(--img-front) center/cover;box-shadow:0 40px 70px -30px rgba(0,0,0,.75);animation:float 6.5s var(--ease) infinite}
-.cap .reflect{
-  aspect-ratio:1;background:var(--img-front) center/cover;border-radius:22px;
-  margin-top:8px;transform:scaleY(-1);
-  -webkit-mask-image:linear-gradient(to bottom,rgba(0,0,0,.32),transparent 55%);
-          mask-image:linear-gradient(to bottom,rgba(0,0,0,.32),transparent 55%);
-  opacity:.5;
+.turntable{
+  position:relative;width:100%;aspect-ratio:1;
+  transform-style:preserve-3d;will-change:transform;
+  cursor:grab;touch-action:pan-y;
 }
-.cap .badge{
-  position:absolute;left:-6%;bottom:16%;z-index:3;
+.turntable:active{cursor:grabbing}
+.turntable .face{
+  position:absolute;inset:0;border-radius:22px;
+  background-size:cover;background-position:center;
+  backface-visibility:hidden;-webkit-backface-visibility:hidden;
+  box-shadow:0 40px 70px -30px rgba(0,0,0,.75);
+}
+.turntable .f-front{background-image:var(--img-front)}
+.turntable .f-back{background-image:var(--img-back);transform:rotateY(180deg)}
+.viewer .badge{
+  position:absolute;left:-6%;bottom:14%;z-index:5;
   background:var(--amber);color:var(--amber-ink);
   font-family:var(--f-display);font-weight:800;border-radius:14px;
   padding:10px 14px;box-shadow:var(--shadow);transform:rotate(-5deg);text-align:center;line-height:1;
 }
-.cap .badge b{font-size:1.5rem;display:block}
-.cap .badge span{font-size:.62rem;font-weight:600;letter-spacing:.08em;text-transform:uppercase;opacity:.85}
-@keyframes float{0%,100%{transform:translateY(0)}50%{transform:translateY(-16px)}}
+.viewer .badge b{font-size:1.5rem;display:block}
+.viewer .badge span{font-size:.62rem;font-weight:600;letter-spacing:.08em;text-transform:uppercase;opacity:.85}
+.spin-hint{
+  position:absolute;left:50%;bottom:-34px;transform:translateX(-50%);
+  display:inline-flex;align-items:center;gap:7px;white-space:nowrap;
+  font-size:.78rem;font-weight:600;color:var(--hero-muted);
+  animation:spinhint 2.6s var(--ease) infinite;
+}
+.spin-hint svg{width:15px;height:15px}
+@keyframes float{0%,100%{transform:translateY(0)}50%{transform:translateY(-14px)}}
+@keyframes spinhint{0%,100%{transform:translateX(-50%) translateX(-4px)}50%{transform:translateX(-50%) translateX(4px)}}
 
 /* wave divider */
 .wave{display:block;width:100%;height:60px;color:var(--bg)}
@@ -266,7 +276,8 @@ section[id],header[id]{scroll-margin-top:82px}
 .price-lead{color:var(--hero-muted);margin-top:18px;max-width:36ch}
 .ptiles{display:grid;gap:12px}
 .ptile{display:flex;gap:14px;align-items:center;background:rgba(255,255,255,.05);border:1px solid var(--hero-line);border-radius:14px;padding:16px 18px}
-.ptile .pn{font-family:var(--f-display);font-weight:800;font-size:1.6rem;color:#fff;min-width:62px;font-variant-numeric:tabular-nums}
+.ptile .pn{font-family:var(--f-display);font-weight:800;font-size:1.6rem;color:#fff;min-width:62px;font-variant-numeric:tabular-nums;display:flex;align-items:center}
+.ptile .pn svg{width:34px;height:34px;color:var(--amber-soft)}
 .ptile .pl b{display:block;color:#fff;font-size:.98rem}
 .ptile .pl span{color:var(--hero-muted);font-size:.85rem}
 
@@ -416,17 +427,23 @@ section[id],header[id]{scroll-margin-top:82px}
       <div class="microstats">
         <div class="s"><span class="n">R$50</span><span class="l">preço de custo</span></div>
         <div class="sep"></div>
-        <div class="s"><span class="n">Grátis</span><span class="l">o frete é por minha conta</span></div>
+        <div class="s"><span class="n">0</span><span class="l">de lucro — é pela comunidade</span></div>
         <div class="sep"></div>
         <div class="s"><span class="n">50</span><span class="l">unidades pra viabilizar</span></div>
       </div>
     </div>
     <div class="stage">
-      <div class="cap" id="cap">
+      <div class="viewer" id="viewer">
         <span class="glow"></span>
-        <div class="badge"><b>R$50</b><span>frete grátis</span></div>
-        <div class="face" role="img" aria-label="Boné verde do PescApp com a logo do peixe bordada em branco e bandeira do Brasil na lateral"></div>
-        <div class="reflect" aria-hidden="true"></div>
+        <div class="badge"><b>R$50</b><span>preço de custo</span></div>
+        <div class="turntable" id="turntable" role="img" aria-label="Boné verde do PescApp em 360°: logo do peixe bordada na frente, regulador atrás. Arraste para girar.">
+          <div class="face f-front"></div>
+          <div class="face f-back"></div>
+        </div>
+        <span class="spin-hint" aria-hidden="true">
+          <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M21 12a9 9 0 1 1-3-6.7"/><path d="M21 3v5h-5"/></svg>
+          arraste para girar 360°
+        </span>
       </div>
     </div>
   </div>
@@ -439,14 +456,14 @@ section[id],header[id]{scroll-margin-top:82px}
     <div class="note reveal">
       <div class="from">
         <span class="av" role="img" aria-label="Logo PescApp"></span>
-        <span class="who"><b>Recado do Léo</b><span>Criador do PescApp · @pescapp.oficial</span></span>
+        <span class="who"><b>Recado do Coelho</b><span>Criador do PescApp · @pescapp.oficial</span></span>
       </div>
       <div class="body">
         <p><b>Fala, pessoal! 🎣</b></p>
         <p>Tô pensando em fazer uns bonés do PescApp, mas antes queria ver se vocês realmente abraçam a ideia.</p>
         <p>A proposta é fazer um <span class="hi">boné premium</span>, com a mesma preocupação com qualidade que eu procuro ter no desenvolvimento do PescApp. Prefiro entregar um produto que fique top do que mais do mesmo.</p>
         <p>Como muitos sabem, o PescApp tá crescendo e os custos também. Já precisei contratar um servidor pago pra manter tudo funcionando e agora também tô investindo pra lançar o app na Apple. Tudo isso é pra continuar evoluindo o projeto, trazer mais usuários, mais torneios e novos recursos.</p>
-        <p>O boné vai sair por <span class="hi">R$ 50,00</span>, que é o preço de custo. Inclusive, o <span class="hi">frete fica por minha conta</span>.</p>
+        <p>O boné vai sair por <span class="hi">R$ 50,00</span>, que é o preço de custo — sem lucro nenhum. A <span class="hi">entrega a gente combina depois</span>: dá pra retirar comigo ou eu envio, do jeito que ficar melhor pra você.</p>
         <p>Pra viabilizar a produção, precisamos fechar pelo menos <span class="hi">50 unidades</span>. Se a gente atingir essa quantidade, eu sigo com o pedido. Conto com vocês! 👊🧢🎣</p>
         <p style="color:var(--muted);font-size:.98rem">Preenche o formulário aqui embaixo pra confirmar seu interesse. Tem ideia ou sugestão? Manda também. 👇</p>
       </div>
@@ -488,7 +505,7 @@ section[id],header[id]{scroll-margin-top:82px}
       <div class="reveal">
         <ul class="specs">
           <li><span class="chk"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.4" stroke-linecap="round" stroke-linejoin="round"><path d="M20 6L9 17l-5-5"/></svg></span><span class="st">Modelo</span><span class="sv">6 gomos, tecido Paranatex (base 510)</span></li>
-          <li><span class="chk"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.4" stroke-linecap="round" stroke-linejoin="round"><path d="M20 6L9 17l-5-5"/></svg></span><span class="st">Aba</span><span class="sv">Curva MT-05, com detalhe refletivo</span></li>
+          <li><span class="chk"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.4" stroke-linecap="round" stroke-linejoin="round"><path d="M20 6L9 17l-5-5"/></svg></span><span class="st">Aba</span><span class="sv">Curva MT-05, com acabamento sanduíche</span></li>
           <li><span class="chk"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.4" stroke-linecap="round" stroke-linejoin="round"><path d="M20 6L9 17l-5-5"/></svg></span><span class="st">Cor</span><span class="sv">Verde PescApp com bordado branco</span></li>
           <li><span class="chk"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.4" stroke-linecap="round" stroke-linejoin="round"><path d="M20 6L9 17l-5-5"/></svg></span><span class="st">Detalhes</span><span class="sv">Logo na frente, bandeira do Brasil e @pescapp.oficial</span></li>
           <li><span class="chk"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.4" stroke-linecap="round" stroke-linejoin="round"><path d="M20 6L9 17l-5-5"/></svg></span><span class="st">Ajuste</span><span class="sv">Fechamento traseiro regulável — serve em todo mundo</span></li>
@@ -508,12 +525,12 @@ section[id],header[id]{scroll-margin-top:82px}
           <span class="eyebrow">Sem pegadinha</span>
           <div class="price-big" style="margin-top:12px"><span class="cur">R$</span>50</div>
           <span class="price-tag">preço de custo — zero lucro</span>
-          <p class="price-lead">É o valor que o fabricante cobra por unidade. Você paga só isso, e o frete vai por minha conta pra qualquer canto do Brasil.</p>
+          <p class="price-lead">É o valor que o fabricante cobra por unidade — você paga só isso, sem lucro nenhum. A entrega a gente combina depois: retirada comigo ou envio.</p>
         </div>
         <div class="ptiles">
-          <div class="ptile"><span class="pn">R$0</span><span class="pl"><b>Frete grátis</b><span>eu banco a entrega até você</span></span></div>
           <div class="ptile"><span class="pn">50</span><span class="pl"><b>Meta da turma</b><span>só produzo se fecharmos 50 unidades</span></span></div>
           <div class="ptile"><span class="pn">0</span><span class="pl"><b>Pagamento agora</b><span>hoje é só confirmar o interesse</span></span></div>
+          <div class="ptile"><span class="pn"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M1 3h15v13H1z"/><path d="M16 8h4l3 3v5h-7z"/><circle cx="5.5" cy="18.5" r="2"/><circle cx="18.5" cy="18.5" r="2"/></svg></span><span class="pl"><b>Entrega a combinar</b><span>retirada comigo ou envio — a gente ajusta</span></span></div>
         </div>
       </div>
     </div>
@@ -554,7 +571,7 @@ section[id],header[id]{scroll-margin-top:82px}
 
       <div class="summary">
         <span class="st">Você está reservando <b id="sumQty" style="color:var(--ink)">1 boné</b></span>
-        <span class="sv"><span id="sumTotal">R$ 50</span> <small>+ frete grátis</small></span>
+        <span class="sv"><span id="sumTotal">R$ 50</span> <small>preço de custo</small></span>
       </div>
 
       <button type="submit" class="submit">
@@ -590,7 +607,7 @@ section[id],header[id]{scroll-margin-top:82px}
 /* ===== CONFIG =============================================
    >>> TROQUE pelo seu número de WhatsApp (DDI 55 + DDD + número, só dígitos)
    Ex.: Brasil, DDD 11, número 91234-5678  ->  "5511912345678"           */
-var WHATSAPP = "5599999999999";
+var WHATSAPP = "5551996195068";
 /* ========================================================= */
 
 (function(){
@@ -638,15 +655,23 @@ var WHATSAPP = "5599999999999";
     var rt; window.addEventListener('resize', function(){ clearTimeout(rt); rt=setTimeout(function(){resize();seed();},200); });
   }
 
-  /* ---------- CAP MOUSE TILT ---------- */
-  var cap = document.getElementById('cap'), stage = cap ? cap.parentElement : null;
-  if (cap && stage && !reduce && window.matchMedia('(pointer:fine)').matches){
-    stage.addEventListener('mousemove', function(e){
-      var r = stage.getBoundingClientRect();
-      var px = (e.clientX - r.left)/r.width - 0.5, py = (e.clientY - r.top)/r.height - 0.5;
-      cap.style.transform = 'rotateY('+(px*16)+'deg) rotateX('+(-py*14)+'deg)';
-    });
-    stage.addEventListener('mouseleave', function(){ cap.style.transform = 'rotateY(0) rotateX(0)'; });
+  /* ---------- CAP 3D TURNTABLE (auto-spin + drag) ---------- */
+  var tt = document.getElementById('turntable'), viewer = document.getElementById('viewer');
+  if (tt){
+    var angle = -20, vel = 0.45, dragging = false, paused = false, lastX = 0;
+    function renderTT(){ tt.style.transform = 'rotateY(' + angle + 'deg)'; }
+    renderTT();
+    function spin(){ if (!dragging && !paused && !reduce){ angle += vel; renderTT(); } requestAnimationFrame(spin); }
+    if (!reduce) requestAnimationFrame(spin);
+    tt.addEventListener('pointerdown', function(e){ dragging = true; paused = true; lastX = e.clientX; try{ tt.setPointerCapture(e.pointerId); }catch(_){} });
+    tt.addEventListener('pointermove', function(e){ if (!dragging) return; angle += (e.clientX - lastX) * 0.7; lastX = e.clientX; renderTT(); });
+    function endDrag(){ dragging = false; paused = false; }
+    tt.addEventListener('pointerup', endDrag);
+    tt.addEventListener('pointercancel', endDrag);
+    if (viewer && window.matchMedia('(pointer:fine)').matches){
+      viewer.addEventListener('mouseenter', function(){ paused = true; });
+      viewer.addEventListener('mouseleave', function(){ if (!dragging) paused = false; });
+    }
   }
 
   /* ---------- SCROLL REVEAL ---------- */
@@ -703,7 +728,8 @@ var WHATSAPP = "5599999999999";
             + 'Nome: '+name.value.trim()+'\n'
             + 'Telefone: '+phone.value+'\n'
             + 'Quantidade: '+v+(v===1?' boné':' bonés')+'\n'
-            + 'Total (preço de custo): R$ '+(v*50)+' + frete grátis';
+            + 'Total: R$ '+(v*50)+' (preço de custo)\n\n'
+            + 'A entrega a gente combina depois (retirada ou envio).';
     var url = 'https://wa.me/'+WHATSAPP+'?text='+encodeURIComponent(msg);
     window.open(url, '_blank', 'noopener');
     form.querySelector('.form-grid').style.display='none';
